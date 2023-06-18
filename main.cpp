@@ -1,10 +1,12 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 
 int main()
 {   
+    system("cls");
     int option;
     cout << "Welcome\n";
     do
@@ -20,13 +22,12 @@ int main()
             cout << "Edit entry\n";
             break;
         case 0:
-            cout << "Goodbye\n";
-            exit;
+            break;
         default:
             cout << "Option not valid\nPlease try again\n";
             break;
         }
     } while (option != 0);
-    
-    
+    system("cls");
+    cout << "Goodbye";
 }
