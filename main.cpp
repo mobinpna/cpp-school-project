@@ -1,30 +1,64 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
-// int diffCalculator(int a, int b)
-// {
+const int stdworkmin = 420;
+int undertime = 0;
+int overtime = 0;
 
-//     if (b-a >= 7)
-//     {
-//         /* code */
-//     }
+int hourMinToTotal(int h, int min)
+{
+    int total;
+    total = (h*60+min);
+
+    return total;
+}
+
+void diffcalc(int x)
+{
+    if(x >= 450)
+    {
+        overtime = x-450;
+        undertime = 0;
+    }
+    else
+    {
+        undertime = 450-x;
+        overtime = 0;
+    }
+}
+
+
+int totalToHour(int a)
+{
+    int hour;
+    hour = a/60;
     
+    return hour;
+}
 
-// }
+
+int totalToMin(int a)
+{
+    int min;
+    min = a % 60;
+
+    return min;
+}
 
 void newEntry()
 {
-       
+    int clockintotal, clockouttotal;
     long long int codemelli;
     string name;
-    int clockinhour, clockinmin;
-    int clockouthour, clockoutmin;
-    int overtimehour, overtimemin;
-    int undertimehour, undertimemin;
-    
+    int clockinh, clockinmin;
+    int clockouth, clockoutmin;
+    int overtimeh = 0, overtimemin = 0;
+    int undertimeh = 0, undertimemin = 0;
+    int diffcalreturn;
     fstream file;
     file.open("File.txt", ios::app);
     if (file)
@@ -36,14 +70,27 @@ void newEntry()
         cin.ignore();
         getline(cin, name);
         cout << "Please enter your clock-in hour and miunte accordingly.\n";
-        cin >> clockinhour >> clockinmin ;
+        cin >> clockinh >> clockinmin ;
         cout << "Please enter your clock-out hour and miunte accordingly.\n";
-        cin >> clockouthour >> clockoutmin;
-        // diffCalculator(clockinhour, clockouthour);
-        file << codemelli << "#" << name << "#" 
-        << clockinhour << ":" << clockinmin << "#"
-        <<clockouthour << ":" << clockoutmin << "#" << endl;
+        cin >> clockouth >> clockoutmin;
 
+        clockintotal = hourMinToTotal(clockinh, clockinmin);
+        clockouttotal = hourMinToTotal(clockouth, clockoutmin);
+        diffcalc(clockouttotal - clockintotal);
+        overtimeh = totalToHour(overtime);
+        overtimemin = totalToMin(overtime);
+        undertimeh = totalToHour(undertime);
+        undertimemin = totalToMin(undertime);
+
+        file << codemelli << "#" << name << "#";
+        file << setfill('0') << setw(2) << clockinh << ":" ;
+        file << setfill('0') << setw(2) << clockinmin << "#";
+        file << setfill('0') << setw(2) << clockouth << ":" ;
+        file << setfill('0') << setw(2) << clockoutmin << "#";
+        file << setfill('0') << setw(2) << undertimeh << ":" ;
+        file << setfill('0') << setw(2) << undertimemin << "#" ;
+        file << setfill('0') << setw(2) << overtimeh << ":" ;
+        file << setfill('0') << setw(2) << overtimemin << endl ;        
     }
     else
         cerr << "There is a problem with your file.\n";
